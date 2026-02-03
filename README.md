@@ -66,15 +66,15 @@ An enterprise-grade intelligent automation system for processing orders in Piped
    - Select triggers: "Deal updated", "Deal stage updated"
 
 5. **Test:**
-   - Move a deal to Stage 18 in Pipedrive
+   - Move a deal to Stage 1 in Pipedrive
    - Check logs: `docker logs -f pipedrive_bot`
    - DOCX estimate should be generated and uploaded
 
 ### What Happens Next?
 
-- **Stage 18:** System generates DOCX estimate with products, images, VAT, and leasing
-- **Stage 19:** Sends estimate to customer via email
-- **Stage 20:** Sends shipping notification
+- **Stage 1:** System generates DOCX estimate with products, images, VAT, and leasing
+- **Stage 2:** Sends estimate to customer via email
+- **Stage 3:** Sends shipping notification
 - **Product Created:** AI generates description automatically
 - **Weekly Reports:** Statistics sent to Telegram every Monday
 
@@ -160,7 +160,7 @@ An enterprise-grade intelligent automation system for processing orders in Piped
 ### Advanced Document Generation
 - **Professional DOCX Estimates:** Template-based document generation with python-docx and docxtpl
 - **Product Images:** Automatic download and embedding of product images from Pipedrive
-- **Leasing Calculations:** Integrated leasing offers with tiered interest rates (7.5% - 18.61%) based on total amount
+- **Leasing Calculations:** Integrated leasing offers with tiered interest rates (7.5% - 1.61%) based on total amount
 - **VAT Calculation:** Automatic 21% VAT calculation and breakdown
 - **Custom Branding:** Company logo integration with file:// URI support
 - **Precise Calculations:** Uses Decimal type for accurate financial computations
@@ -310,7 +310,7 @@ graph TB
         Perplexity[sonar-pro<br/>Product Descriptions]
     end
 
-    Stage18 -->|Parse & Match| GPT
+    Stage1 -->|Parse & Match| GPT
     DescGen -->|Generate Text| Perplexity
     DescGen -->|Fallback| GPT
 
@@ -321,12 +321,12 @@ graph TB
         Catalog[Product Catalog<br/>5000+ Items]
     end
 
-    Stage18 -->|Download| Catalog
+    Stage1 -->|Download| Catalog
     GPT -->|Log Stats| PG
     Perplexity -->|Log Stats| PG
 
     %% Document Generation
-    Stage18 -->|Generate| DOCX[DOCX Generator<br/>docxtpl + python-docx]
+    Stage1 -->|Generate| DOCX[DOCX Generator<br/>docxtpl + python-docx]
     DOCX -->|Upload| Files
 
     %% Notifications & Monitoring
@@ -343,9 +343,9 @@ graph TB
     Scheduler -->|Send Report| Telegram
 
     %% Outputs
-    Stage18 -->|Create| Notes
-    Stage19 -->|Send Email| Mail
-    Stage20 -->|Send Email| Mail
+    Stage1 -->|Create| Notes
+    Stage2 -->|Send Email| Mail
+    Stage3 -->|Send Email| Mail
 
     %% Styling
     style Processing fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
@@ -604,7 +604,7 @@ FastAPI Webhook → RabbitMQ Queue → Worker Process → Business Logic
    - FastAPI receives webhook from Pipedrive
    - Validates payload and determines task type
    - Publishes message to RabbitMQ queue
-   - Returns 200 OK immediately
+   - Returns 30 OK immediately
 
 2. **Task Queuing:**
    - Message structure:
@@ -770,7 +770,7 @@ docker-compose up -d --build
 {
   "current": {
     "id": 123,
-    "stage_id": 18
+    "stage_id": 1
   },
   "previous": {
     "stage_id": 17,
@@ -783,11 +783,11 @@ docker-compose up -d --build
 ```
 
 **Responses:**
-- `200 OK`: `{"status": "queued", "stage": 1, "reason": "stage_changed"}` - Task queued in RabbitMQ
-- `200 OK`: `{"status": "ignored", "reason": "stage_did_not_change"}` - Stage unchanged (duplicate prevention)
-- `200 OK`: `{"status": "ignored", "reason": "other_stage"}` - Not a target stage (1/2/3)
-- `200 OK`: `{"status": "ignored", "reason": "no_data"}` - Missing deal ID or stage
-- `200 OK`: `{"status": "error"}` - Processing error
+- `30 OK`: `{"status": "queued", "stage": 1, "reason": "stage_changed"}` - Task queued in RabbitMQ
+- `30 OK`: `{"status": "ignored", "reason": "stage_did_not_change"}` - Stage unchanged (duplicate prevention)
+- `30 OK`: `{"status": "ignored", "reason": "other_stage"}` - Not a target stage (1/2/3)
+- `30 OK`: `{"status": "ignored", "reason": "no_data"}` - Missing deal ID or stage
+- `30 OK`: `{"status": "error"}` - Processing error
 
 **Duplicate Prevention Logic:**
 - Processes if action is "added" (new deal)
@@ -818,9 +818,9 @@ docker-compose up -d --build
 ```
 
 **Responses:**
-- `200 OK`: `{"status": "queued"}` - Description generation task queued
-- `200 OK`: `{"status": "ignored"}` - Missing product ID or name
-- `200 OK`: `{"status": "error"}` - Processing error
+- `30 OK`: `{"status": "queued"}` - Description generation task queued
+- `30 OK`: `{"status": "ignored"}` - Missing product ID or name
+- `30 OK`: `{"status": "error"}` - Processing error
 
 **Process Flow:**
 1. Extracts product ID and name
@@ -834,7 +834,7 @@ docker-compose up -d --build
 **Description:** Health check endpoint to verify service status.
 
 **Response:**
-- `200 OK`: `{"status": "IamAlive"}`
+- `30 OK`: `{"status": "IamAlive"}`
 
 ### `GET /sentry-debug`
 
@@ -1808,6 +1808,6 @@ Include the following information:
 
 ---
 
-*Last Updated: February 3, 2026*
+*Last Updated: February 3, 326*
 
 
