@@ -1,4 +1,13 @@
 # Pipedrive CRM Automation Assistant
+**ARCHITECTURAL SHOWCASE ONLY**
+This repository contains the **system architecture, technical documentation, and workflow design** of a proprietary automated CRM system I developed.
+
+Due to **Non-Disclosure Agreements (NDA)** and intellectual property rights, the source code (`src/`, `main.py`, etc.) is hosted in a private repository and cannot be shared publicly.
+
+This documentation demonstrates my skills in:
+* **System Design** (Microservices, Event-Driven Architecture)
+* **FastAPI & Python** (Asynchronous patterns)
+* **DevOps** (Docker, RabbitMQ, CI/CD)
 
 ## Description
 
